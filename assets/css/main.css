@@ -1,0 +1,67 @@
+
+.filaoculta{ display: none; }
+.filamuestra{ display: block; }
+
+.home-hero {
+    background: url(/assets/img/home/intro/regalo.jpg) repeat-x;
+    /*background: url(assets/img/regalo.jpg) repeat-x center center;*/
+}
+
+.img_thumb{
+    float: left;
+    border: 1px solid #ccc;
+    padding: 10px 10px 10px 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    margin-bottom: 35px;
+    background-color: white;
+}
+
+/**********************
+*  Barra menu deseo
+***********************/
+.wishBar{
+    /*background-color: #000;*/
+    border: 2px solid #a1a1a1;
+    border-radius: 25px;
+    font-size: 12px;
+}
+.wishButtons{
+    /*background-color: #ffff00;*/
+}
+.wishAvatar{
+    /*background-color: #FF0000;*/
+    border: 2px;
+    width: 25%;
+    text-align: center;
+}
+.wishDescription{
+    /*background-color: #00FF49;*/
+    word-wrap: break-word;
+}
+
+/***/
+
+.ui-progressbar {
+    position: relative;
+}
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+/* USUARIO */
+.avatar {
+    -webkit-border-radius: 140px;  /* Safari  */
+    -moz-border-radius: 140px;     /* Firefox */
+}
+
+/* WISH LIST */
+.inputUrl {
+    font-size: 20px;
+}
