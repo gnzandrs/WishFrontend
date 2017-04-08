@@ -1,0 +1,47 @@
+<!-- REGISTRO -->
+.row
+  div(class='small-12 columns')
+    h2 Registrate para comenzar!
+
+form
+  div(class='small-6 large-centered columns text-left')
+    div(class='callout alert errors filaoculta')
+    div(class='row username')
+      div(class="callout success filaoculta" id="usuarioDisponible") El nombre de usuario se encuentra disponible!
+      div(class="callout alert filaoculta" id="usuarioNoDisponible") Alerta: Éste nombre de usuario ya se encuentra registrado, escoge otro.
+      label Nombre de usuario
+      input(type='text' placeholder='Ingrese un nombre de usuario' id='username' maxlength='20' required)
+    .row
+      label Nombre
+      input(type='text' placeholder='Ingrese su nombre' id='name' name='name' maxlength='20' required)
+    .row
+      label Apellido
+      input(type='text' placeholder='Ingrese su apellido' id='lastname' name='lastname' maxlength='20' required)
+
+    .row
+      div(class="callout alert filaoculta" id="correoNoDisponible") Alerta: Éste correo ya se encuentra registrado, utiliza uno diferente.
+      label Email
+      input(type='email' placeholder='Ingrese su correo' id='email' name='email' maxlength='30' required)
+    .row
+      label Genero
+      input(type='radio' value='male' name='genre' required)
+      |  Masculino
+      input(type='radio' value='female' name='genre' required)
+      |  Femenino
+    .row
+      label Pais
+      select(id='country' name='country' required)
+        option(value='0') -- Seleccionar Pais --
+    .row
+      label Ciudad
+      select(id='city' name='city' required)
+        option(value='0') -- Seleccionar Ciudad --
+    .row
+      label Contraseña
+      input(type='password' placeholder='Ingrese una contraseña' id='password' name='password' required)
+    .row
+      label Confirmar Contraseña
+      input(type='password' placeholder='Ingrese su contraseña' id='password_confirmation' name='password_confirmation' required data-equalto='password')
+
+    div(class='row text-center')
+      button(type='submit' class='big round button') Aceptar
