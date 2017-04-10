@@ -11,7 +11,7 @@ function signUp () {
   $('.app-container').html(template())
 
   // username verification
-  /*$('#username')
+  $('#username')
     .on('focusout', function () {
       var userName = $('#username').val()
       checkUsername (userName, function (available) {
@@ -29,9 +29,9 @@ function signUp () {
     .on('keypress', function () {
         $('#usuarioNoDisponible').fadeOut("slow").addClass('filaoculta');
         $('#usuarioDisponible').fadeOut("slow").addClass('filaoculta');
-    })*/
+    })
 
-  /*$('#email').on('focusout', function () {
+  $('#email').on('focusout', function () {
     var email = $('#email').val()
     checkEmail (email, function (available) {
         if (parseInt(available)) {
@@ -41,7 +41,7 @@ function signUp () {
           $('#email').focus();
         }
     })
-  })*/
+  })
 
   // charge countries <select>
   var countriesSelect = $('#country')
