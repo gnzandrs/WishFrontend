@@ -1,17 +1,18 @@
 var $ = require('jquery')
 var page = require('page')
+var template = require('./sign-up.jade')
 var { checkUsername, checkEmail, countriesList, citiesList, register }
   = require('../wish-api-client')
-var template = require('./sign-up.jade')
 
 page('/sign-up', signUp)
-
 
 function signUp () {
   $('.app-container').html(template())
 
+  let $registerForm = $('.app-container').find('form')
+
   // username verification
-  $('#username')
+  $registerForm.find('#username')
     .on('focusout', function () {
       var userName = $('#username').val()
       checkUsername (userName, function (available) {
@@ -31,7 +32,7 @@ function signUp () {
         $('#usuarioDisponible').fadeOut("slow").addClass('filaoculta');
     })
 
-  $('#email').on('focusout', function () {
+  $registerForm.find('#email').on('focusout', function () {
     var email = $('#email').val()
     checkEmail (email, function (available) {
         if (parseInt(available)) {
@@ -44,14 +45,7 @@ function signUp () {
   })
 
   // charge countries <select>
-  var countriesSelect = $('#country')
-  countriesList(function (countries) {
-    $.each(countries, function() {
-        countriesSelect.append($("<option />").val(this.id).text(this.name))
-    })
-  })
-
-  countriesSelect
+  $registerForm.find('#country')
     .on('change', function () {
       // charge cities <select>
       var citiesSelect = $('#city')
@@ -69,40 +63,46 @@ function signUp () {
       }
     })
 
-    $('.app-container').find('form')
-      .submit(function (event) {
-        event.preventDefault()
 
-        var user = {
-          username: $(this).find('input[id="username"]').val(),
-          email:    $(this).find('input[id="email"]').val(),
-          name:     $(this).find('input[id="name"]').val(),
-          lastname: $(this).find('input[id="lastname"]').val(),
-          genre:    $(this).find('input[name="genre"][type="radio"]:checked').val(),
-          country_id:  $(this).find('select[name="country"]').val(),
-          city_id:     $(this).find('select[name="city"]').val(),
-          password: $(this).find('input[id="password"]').val(),
-          password_confirmation: $(this).find('input[id="password_confirmation"]').val(),
+  countriesList(function (countries) {
+    $.each(countries, function() {
+        $registerForm.find('#country').append($("<option />").val(this.id).text(this.name))
+    })
+  })
+
+  $registerForm
+    .submit(function (event) {
+      event.preventDefault()
+
+    var user = {
+      username: $(this).find('input[id="username"]').val(),
+      email:    $(this).find('input[id="email"]').val(),
+      name:     $(this).find('input[id="name"]').val(),
+      lastname: $(this).find('input[id="lastname"]').val(),
+      genre:    $(this).find('input[name="genre"][type="radio"]:checked').val(),
+      country_id:  $(this).find('select[name="country"]').val(),
+      city_id:     $(this).find('select[name="city"]').val(),
+      password: $(this).find('input[id="password"]').val(),
+      password_confirmation: $(this).find('input[id="password_confirmation"]').val(),
+    }
+
+    register(user, function (response) {
+      if (response == user.username) {
+        page.redirect('/')
+      } else {
+        var errorsDiv = $('.errors')
+
+        errorsDiv
+          .empty()
+          .removeClass('filaoculta')
+
+        for (var key in response) {
+          errorsDiv.append($("<p>").text(response[key]))
+          console.log(key + ': ' + response[key])
         }
+      }
+    })
 
-        register(user, function (response) {
-          if (response == user.username) {
-            page.redirect('/')
-          } else {
-            var errorsDiv = $('.errors')
-
-            errorsDiv
-              .empty()
-              .removeClass('filaoculta')
-
-            for (var key in response) {
-              errorsDiv.append($("<p>").text(response[key]))
-              console.log(key + ': ' + response[key])
-            }
-          }
-        })
-
-      })
-
+    })
 
 }
