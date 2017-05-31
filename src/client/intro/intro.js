@@ -7,7 +7,12 @@ page('/intro', intro)
 
 function intro () {
   $('.app-container').html(template())
+
   $('.sign-up').on('click', function () {
       page('/sign-up')
+  })
+
+  $('.login').on('click', function () {
+      page('/login')
   })
 }
