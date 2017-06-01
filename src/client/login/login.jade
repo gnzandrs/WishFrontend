@@ -1,1 +1,26 @@
-h1 Login page!
+div(class='row text-center')
+    div(class='small-12 colums')
+        <br>
+        <hr>
+        <br>
+
+        form
+            .row
+                div(class='large-12 columns')
+                    h1 Autentificacion de Usuario
+            .row
+                div(class='small-6 large-centered columns')
+                    label Usuario
+                    input(type='text' placeholder='Ingresa username o tu correo' id='username' name='username' required data-invalid)
+                    <br>
+                    label Contraseña
+                    input(type='password' placeholder='Ingresa tu contraseña' id='password' name='password')
+                    <br>
+                    div(id='alertPass' data-alert class='alert-box warning round')
+                        Si no recuerdas tu contraseña presiona sobre el siguiente enlace.
+                        a(href='#' class='close')&times;
+                    p ¿Olvidaste tu contraseña?
+                      a(href='#') Recupararla
+            <br>
+            div(class='small-12 columns')
+                button(class='big round button' type='submit') Ingresar
