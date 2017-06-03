@@ -45,3 +45,14 @@ export function register ($user, fn) {
     fn(response)
   });
 }
+
+export function login ($user, fn) {
+  $.ajax({
+    url: 'http://wish.local/user/login/',
+    method: "POST",
+    data: { user: $user },
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  })
+}
