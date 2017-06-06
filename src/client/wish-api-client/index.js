@@ -46,13 +46,13 @@ export function register ($user, fn) {
   });
 }
 
-export function login ($user, fn) {
+export function login ($formData, fn) {
   $.ajax({
     url: 'http://wish.local/user/login/',
     method: "POST",
-    data: { user: $user },
+    data: $formData,
     dataType: "json"
   }).done(function (response) {
-    fn (response)
+    fn(response)
   })
 }

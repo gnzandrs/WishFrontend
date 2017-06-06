@@ -14,25 +14,17 @@ function loginPage () {
     .submit(function (event) {
       event.preventDefault()
 
-      let user = {
-        email: $(this).find('input[id="email"]').val(),
-        password: $(this).find('input[id="password"]').val()
-      }
+      let $formData = $(this).serialize()
 
-      login (user, function (response) {
-        if (response == user.email) {
+      login ($formData, function (response) {
+        if (response.token) {
+          localeStorage.setItem('token', response.token)
           page.redirect('/')
         } else {
-          var errorsDiv = $('.errors')
-
-          errorsDiv
+          $('.errors')
             .empty()
             .removeClass('filaoculta')
-
-          for (var key in response) {
-            errorsDiv.append($("<p>").text(response[key]))
-            console.log(key + ': ' + response[key])
-          }
+            .append($("<p>").text(response.error))
         }
       })
     })
