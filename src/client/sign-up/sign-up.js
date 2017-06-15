@@ -1,7 +1,7 @@
-var $ = require('jquery')
-var page = require('page')
-var template = require('./sign-up.jade')
-var { checkUsername, checkEmail, countriesList, citiesList, register }
+let $ = require('jquery')
+let page = require('page')
+let template = require('./sign-up.jade')
+let { checkUsername, checkEmail, countriesList, citiesList, register }
   = require('../wish-api-client')
 
 page('/sign-up', signUp)
@@ -14,7 +14,8 @@ function signUp () {
   // username verification
   $registerForm.find('#username')
     .on('focusout', function () {
-      var userName = $('#username').val()
+      let userName = this.value
+
       checkUsername (userName, function (available) {
         if (parseInt(available)) {
           $('#usuarioNoDisponible').fadeOut("slow").addClass('filaoculta');
@@ -33,7 +34,7 @@ function signUp () {
     })
 
   $registerForm.find('#email').on('focusout', function () {
-    var email = $('#email').val()
+    let email = $('#email').val()
     checkEmail (email, function (available) {
         if (parseInt(available)) {
           $('#correoNoDisponible').fadeOut("slow").addClass('filaoculta');
@@ -48,8 +49,8 @@ function signUp () {
   $registerForm.find('#country')
     .on('change', function () {
       // charge cities <select>
-      var citiesSelect = $('#city')
-      var countryId = $('select[name=country]').val()
+      let citiesSelect = $('#city')
+      let countryId = $('select[name=country]').val()
       citiesSelect
         .empty()
         .append($("<option />").val(0).text('-- Seleccionar Ciudad --'));
@@ -74,7 +75,7 @@ function signUp () {
     .submit(function (event) {
       event.preventDefault()
 
-    var user = {
+    let user = {
       username: $(this).find('input[id="username"]').val(),
       email:    $(this).find('input[id="email"]').val(),
       name:     $(this).find('input[id="name"]').val(),
@@ -90,13 +91,13 @@ function signUp () {
       if (response == user.username) {
         page.redirect('/')
       } else {
-        var errorsDiv = $('.errors')
+        let errorsDiv = $('.errors')
 
         errorsDiv
           .empty()
           .removeClass('filaoculta')
 
-        for (var key in response) {
+        for (let key in response) {
           errorsDiv.append($("<p>").text(response[key]))
           console.log(key + ': ' + response[key])
         }
