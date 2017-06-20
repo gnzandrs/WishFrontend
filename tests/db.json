@@ -1,0 +1,6 @@
+{
+  "user": [
+    { "id": 1, "name": "tom", "lastname": "riddle", "email": "imlordvoldemort@wizard.uk" },
+    { "id": 2, "name": "harry", "lastname": "potter", "email": "hp@wizard.uk" }
+  ]
+}
