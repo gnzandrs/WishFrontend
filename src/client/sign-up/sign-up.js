@@ -88,7 +88,7 @@ function signUp () {
     }
 
     register(user, function (response) {
-      if (response == user.username) {
+      if (response.created == true) {
         page.redirect('/')
       } else {
         let errorsDiv = $('.errors')
@@ -99,7 +99,6 @@ function signUp () {
 
         for (let key in response) {
           errorsDiv.append($("<p>").text(response[key]))
-          console.log(key + ': ' + response[key])
         }
       }
     })
