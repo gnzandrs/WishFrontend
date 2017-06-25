@@ -6,13 +6,21 @@ var template = require('./intro.jade')
 page('/intro', intro)
 
 function intro () {
-  $('.app-container').html(template())
 
-  $('.sign-up').on('click', function () {
-      page('/sign-up')
-  })
+  let checkSession = localStorage.getItem('token');
 
-  $('.login').on('click', function () {
-      page('/login')
-  })
+  if (checkSession) {
+    page('/home')
+  }
+  else {
+    $('.app-container').html(template())
+
+    $('.sign-up').on('click', function () {
+        page('/sign-up')
+    })
+
+    $('.login').on('click', function () {
+        page('/login')
+    })
+  }
 }

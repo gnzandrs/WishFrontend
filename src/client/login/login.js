@@ -13,13 +13,13 @@ function loginPage () {
   $loginForm
     .submit(function (event) {
       event.preventDefault()
-      
+
       let $formData = $(this).serialize()
 
       login ($formData, function (response) {
         if (response.token) {
-          localeStorage.setItem('token', response.token)
-          page.redirect('/')
+          localStorage.setItem('token', response.token)
+          page.redirect('/home')
         } else {
           $('.errors')
             .empty()
