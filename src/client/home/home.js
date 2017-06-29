@@ -1,12 +1,18 @@
-var $ = require('jquery')
-var page = require('page')
+//let $ = require('jquery')
+global.jQuery = require('jquery')
+let $ = global.jQuery
+let page = require('page')
+let foundation = require('foundation-sites')
 
-var template = require('./home.jade')
-var menu = require('../menu/menu.jade')
+let template = require('./home.jade')
+let menu = require('../menu/menu.jade')
 
 page('/home', home)
 
 function home(ctx, next) {
-  $('.app-container').html(template())
-  $('.menu').html(menu())
+
+    $('.app-container').html(template())
+    $('.menu').html(menu())
+    $(document).foundation()
+
 }

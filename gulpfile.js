@@ -14,7 +14,7 @@ gulp.task('build', ['js', 'css'])
 
 gulp.task('js', function() {
   return browserify({
-    entries: [/*'./assets/js/vendor/modernizr.js', './assets/js/foundation.min.js'*/,'./src/client/index.js'], //punto de entrada js
+    entries: [/*'./assets/js/vendor/modernizr.js'*/, './src/client/index.js'/*, './assets/js/foundation.min.js'*/], //punto de entrada js
     transform: [
       [ babelify, { presets: ["es2015"] } ] ,
       [ jadeify ]
