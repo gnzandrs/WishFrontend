@@ -1,4 +1,3 @@
-//let $ = require('jquery')
 global.jQuery = require('jquery')
 let $ = global.jQuery
 let page = require('page')
