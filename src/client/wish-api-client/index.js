@@ -58,3 +58,13 @@ export function login (formData, fn) {
     fn(response)
   })
 }
+
+export function categoryList (fn) {
+  $.ajax({
+    url: `${API_URL}category/`,
+    method: "GET",
+    dataType: "json"
+  }).done(function (response) {
+    fn(response)
+  })
+}
