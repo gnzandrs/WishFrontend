@@ -68,3 +68,13 @@ export function categoryList (fn) {
     fn(response)
   })
 }
+
+export function category (name, fn) {
+  $.ajax({
+    url:`${API_URL}category/${name}`,
+    method: "GET",
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  })
+}
