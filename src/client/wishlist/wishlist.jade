@@ -1,0 +1,16 @@
+.row
+    div(class='small-12 columns')
+        h2 Crear Lista
+
+div(class='small-6 large-centered columns text-left')
+    label Nombre
+    input(type='text' id='name' name='name' placeholder='Escribe un nombre para la lista' required data-invalid)
+    label Privacidad
+
+    select(disabled required data-invalid)
+        option(value='') -Selecciona el tipo
+        option(value='personal')  Personal
+        option(value='protected') Privada
+        option(value='public' selected) Publica
+
+div(id='listaDeseos')
