@@ -17,6 +17,10 @@ function home(ctx, next) {
     $('.app-container').html(template())
     $('.menu').html(menu())
 
+    $('.menu-create').on('click', function () {
+      page('/wishlist/create')
+    })
+
     let $categories = $('.categories')
     categoryList(function (categories) {
       $.each(categories, function () {
