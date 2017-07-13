@@ -17,7 +17,13 @@
   div(class='large-12 columns')
       <hr>
       div(id='btnAnadir' class='large-12 columns text-right')
-        div(id='btnAnadir' class='button tiny') Añadir
+        div(id='btn-anadir' class='button tiny' data-open='wishModal') Añadir
       <hr>
 
   .listaDeseos
+
+
+input(type='hidden' name='hdWishListId' id='hdWishListId' value='0')
+
+div(id='wishModal' class='reveal' data-reveal)
+  p Cargando...
