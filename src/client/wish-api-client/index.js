@@ -65,7 +65,7 @@ export function categoryList (fn) {
     method: "GET",
     dataType: "json"
   }).done(function (response) {
-    fn(response)
+    fn (response)
   })
 }
 
@@ -74,6 +74,38 @@ export function category (name, fn) {
     url:`${API_URL}category/${name}`,
     method: "GET",
     dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  })
+}
+
+export function searchLocation (lat, lng, fn) {
+  $.ajax({
+    url:`${API_URL}location/search/${lat}/${lng}`,
+    method: "GET",
+    dataType: "html",
+    async: false,
+  }).done(function (response) {
+    fn (response)
+  })
+}
+
+export function getMarkers (fn) {
+  $.ajax({
+    url:`${API_URL}location/getMarkers`,
+    method: "POST",
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  })
+}
+
+export function imageDelete (name, fn) {
+  $.ajax({
+    url:`${API_URL}wish/imageDelete`,
+    method: "POST",
+    data: { name: name},
+    dataType: "html"
   }).done(function (response) {
     fn (response)
   })
