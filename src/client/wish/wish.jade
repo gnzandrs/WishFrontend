@@ -1,80 +1,54 @@
 div(id='deseo')
     .row
-
         div(class='small-6 columns')
-
         div(class='small-6 colums')
             a(class='close-reveal-modal')&#215;
-
     div(class='small-6 columns text-center')
-
         .row
             form(class='dropzone' id='aw' style='width: 400px; height: 300px;')
-
         .row
             br
 
     form(id='frmDeseo' data-abide='ajax')
-
         div(class='small-6 columns')
-
             br
             br
-
             .row
-
                 div(class='small-3 columns')
                   p Descripcion:
 
                 div(class='small-9 columns')
                     input(type='text' id='description' name='description' placeholder='Ingresa el nombre del objeto' required data-invalid)
-
             <br>
-
             .row
-
                 div(class='small-3 columns')
                   p Referencia:
-
                 div(class='small-9 columns')
-
                     input(type='text' id='reference' name='reference' placeholder='Ingresa la referencia del objeto' required data-invalid)
             br
-
             .row
-
                 div(class='small-3 columns')
                   p Precio:
-
                 div(class='small-9 columns')
                     input(type='text' id='price' name='price' placeholder='Ingresa un precio aproximado' required data-invalid)
-
             br
 
     div(class='small-12 columns')
       p Categoria:
-
     div(class='small-12 columns text-center')
         br
         br
-
     div(class='small-12 columns')
       p Ubicacion:
-
     div(class='small-12 columns text-center')
         div(id='buscar')
-
             .row
-
                 div(class='medium-12 columns text-center')
-
                     input(type='text' id='busqueda' placeholder='Buscar sitio...')
-
                     input(type='button' class='small round button' id='btnBuscar' value='Buscar')
-
         br
-
-        div#map
+        div(id="map-container" style='display: block; width: 100%; height: 350px; margin: 4em auto;')
+          Mapa
         a#btn-save
         a#btn-mapa
         input(type='hidden' name='hdIdLocation' id='hdIdLocation' value='0')
