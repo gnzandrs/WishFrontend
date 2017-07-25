@@ -5,18 +5,20 @@ let modalTemplate = require('../wish/wish.jade')
 let foundation = require('foundation-sites')
 let Dropzone = require('dropzone')
 let GMaps = require('gmaps')
-let { searchLocation, getMarkers, imageDelete }
+let { searchLocation, getMarkers, imageDelete, getCategories }
 = require('../wish-api-client')
 
 
 page('/wishlist/create', create)
 
 function create () {
-  $('.app-container').html(template())
+  let selectedCategories = new Set()
 
-  $('.listaDeseos').html('Pulse sobre el boton para añadir un deseo.')
+  $('.app-container').html(template())
   $('#wishModal').html(modalTemplate())
 
+  $('.listaDeseos')
+      .html('Pulse sobre el boton para añadir un deseo.')
 
   /* Dropzone */
   let myDropzone = new Dropzone("form#aw", {
@@ -69,6 +71,26 @@ function create () {
       }
   })
 
+
+  /* Categories */
+  getCategories(function (categories) {
+    let $categories = $('.categories')
+
+    $.each(categories, function() {
+        $categories.append(
+          $(`<span data-id="${this.id}" class="label secondary">${this.name}</span>`)
+            .on('click', function () {
+              let $this = $(this);
+              $this.toggleClass('secondary primary');
+
+              ($this.attr('class') == 'label primary') ?
+                (selectedCategories.add( $this.attr('data-id'))) :
+                  (selectedCategories.delete( $this.attr('data-id')));
+
+            })
+        )
+    })
+  })
 
   /* Gmaps */
   function chargeMap () {

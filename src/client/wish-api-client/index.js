@@ -110,3 +110,13 @@ export function imageDelete (name, fn) {
     fn (response)
   })
 }
+
+export function getCategories (fn) {
+  $.ajax({
+    url:`${API_URL}category`,
+    method: "GET",
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  })
+}
