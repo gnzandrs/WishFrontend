@@ -5,7 +5,7 @@ let modalTemplate = require('../wish/wish.jade')
 let foundation = require('foundation-sites')
 let Dropzone = require('dropzone')
 let GMaps = require('gmaps')
-let { searchLocation, getMarkers, imageDelete, getCategories }
+let { searchLocation, getMarkers, imageDelete, getCategories, saveWish }
 = require('../wish-api-client')
 
 
@@ -139,6 +139,14 @@ function create () {
       }
     })
   }
+
+  $('#btn-save').on('click', function () {
+    let wish = { }
+
+    saveWish (wish, function (response) {
+      // close modal
+    })
+  })
 
   // wait two seconds before iniciate the map...
   setTimeout(function(){chargeMap()}, 2000)

@@ -120,3 +120,14 @@ export function getCategories (fn) {
     fn (response)
   })
 }
+
+export function saveWish (wish, fn) {
+  $.ajax({
+    url: `${API_URL}user/register/`,
+    method: "POST",
+    data: { wish : wish },
+    dataType: "json"
+  }).done(function (response) {
+    fn(response)
+  });
+}
