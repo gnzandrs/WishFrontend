@@ -92,8 +92,8 @@ export function searchLocation (lat, lng, fn) {
 
 export function getMarkers (fn) {
   $.ajax({
-    url:`${API_URL}location/getMarkers`,
-    method: "POST",
+    url:`${API_URL}location/getmarkers`,
+    method: "GET",
     dataType: "json"
   }).done(function (response) {
     fn (response)
@@ -118,7 +118,9 @@ export function getCategories (fn) {
     dataType: "json"
   }).done(function (response) {
     fn (response)
-  })
+  }).fail(function () {
+    fn ('error')
+  });
 }
 
 export function saveWish (wish, fn) {

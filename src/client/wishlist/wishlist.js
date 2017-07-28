@@ -1,24 +1,24 @@
-let $ = require('jquery')
-let page = require('page')
-let template = require('./wishlist.jade')
-let modalTemplate = require('../wish/wish.jade')
-let foundation = require('foundation-sites')
-let Dropzone = require('dropzone')
-let GMaps = require('gmaps')
+let $ = require('jquery');
+let page = require('page');
+let template = require('./wishlist.jade');
+let modalTemplate = require('../wish/wish.jade');
+let foundation = require('foundation-sites');
+let Dropzone = require('dropzone');
+let GMaps = require('gmaps');
 let { searchLocation, getMarkers, imageDelete, getCategories, saveWish }
-= require('../wish-api-client')
+= require('../wish-api-client');
 
 
-page('/wishlist/create', create)
+page('/wishlist/create', create);
 
 function create () {
-  let selectedCategories = new Set()
+  let selectedCategories = new Set();
 
-  $('.app-container').html(template())
-  $('#wishModal').html(modalTemplate())
+  $('.app-container').html(template());
+  $('#wishModal').html(modalTemplate());
 
   $('.listaDeseos')
-      .html('Pulse sobre el boton para añadir un deseo.')
+      .html('Pulse sobre el boton para añadir un deseo.');
 
   /* Dropzone */
   let myDropzone = new Dropzone("form#aw", {
@@ -35,36 +35,36 @@ function create () {
 
       init: function () {
           this.on("addedfile", function (file) {
-              let _this = this
+              let _this = this;
 
               // boton quitar
-              let removeButton = Dropzone.createElement("<a data-id='"+ file.name +"' class='tiny button'>Quitar</a>")
+              let removeButton = Dropzone.createElement("<a data-id='"+ file.name +"' class='tiny button'>Quitar</a>");
 
               // Listen to the click event
               removeButton.addEventListener("click", function (e) {
                   // Make sure the button click doesn't submit the form:
-                  e.preventDefault()
-                  e.stopPropagation()
+                  e.preventDefault();
+                  e.stopPropagation();
 
                   // Remove the file preview.
-                  _this.removeFile(file)
+                  _this.removeFile(file);
               })
 
               // Add the button to the file preview element.
-              file.previewElement.appendChild(removeButton)
+              file.previewElement.appendChild(removeButton);
 
               /* evento borrar imagen cargada
               (aca deberia ir con un handler de <a> pero no funciona con el modal) */
               let $formDropzone = $('#myModal')
                 .find('.dz-preview')
-                .find('.tiny')
+                .find('.tiny');
 
               $formDropzone.on('click', function(e) {
-                  let $this = $(this)
-                  let nombre = $this.data('id')
+                  let $this = $(this);
+                  let nombre = $this.data('id');
 
                   imageDelete (function (response) {
-                    console.log('image deleted.')
+                    console.log('image deleted.');
                   })
               })
           })
@@ -74,7 +74,8 @@ function create () {
 
   /* Categories */
   getCategories(function (categories) {
-    let $categories = $('.categories')
+
+    let $categories = $('.categories');
 
     $.each(categories, function() {
         $categories.append(
@@ -86,15 +87,14 @@ function create () {
               ($this.attr('class') == 'label primary') ?
                 (selectedCategories.add( $this.attr('data-id'))) :
                   (selectedCategories.delete( $this.attr('data-id')));
-
             })
-        )
-    })
-  })
+        );
+    });
+  });
 
   /* Gmaps */
   function chargeMap () {
-    let lat, lng
+    let lat, lng;
 
     // santiago location
     let map = new GMaps({
@@ -106,9 +106,9 @@ function create () {
     // bookmark event
     GMaps.on('click', map.map, function(event) {
         //event.preventDefault()
-        index = map.markers.length
-        lat = event.latLng.lat()
-        lng = event.latLng.lng()
+        index = map.markers.length;
+        lat = event.latLng.lat();
+        lng = event.latLng.lng();
 
         searchLocation (function (respuesta) {
           if (respuesta) {
@@ -124,7 +124,7 @@ function create () {
         })
     })
 
-    //cargar marcadores BD
+
     getMarkers (function (response) {
       if (response) {
           for (let i in response.length) {
@@ -149,6 +149,6 @@ function create () {
   })
 
   // wait two seconds before iniciate the map...
-  setTimeout(function(){chargeMap()}, 2000)
-  $(document).foundation()
+  setTimeout(function(){chargeMap()}, 2000);
+  $(document).foundation();
 }
