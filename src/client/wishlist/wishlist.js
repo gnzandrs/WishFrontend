@@ -106,12 +106,12 @@ function create () {
     // bookmark event
     GMaps.on('click', map.map, function(event) {
         //event.preventDefault()
-        index = map.markers.length;
+        let index = map.markers.length;
         lat = event.latLng.lat();
         lng = event.latLng.lng();
 
-        searchLocation (function (respuesta) {
-          if (respuesta) {
+        searchLocation (lat, lng, function (response) {
+          if (response) {
               map.addMarker({
                   lat: lat,
                   lng: lng,
@@ -137,7 +137,7 @@ function create () {
       } else {
           alert("Se ha producido un error al obtener los marcadores.")
       }
-    })
+    });
   }
 
   $('#btn-save').on('click', function () {
