@@ -101,14 +101,15 @@ export function getMarkers (fn) {
 }
 
 export function imageDelete (name, fn) {
+  let token = localStorage.getItem('token');
   $.ajax({
-    url:`${API_URL}wish/imageDelete`,
+    url:`${API_URL}wish/delete-image`,
     method: "POST",
-    data: { name: name},
+    data: { name: name, token: token},
     dataType: "html"
   }).done(function (response) {
     fn (response)
-  })
+  });
 }
 
 export function getCategories (fn) {
@@ -123,13 +124,28 @@ export function getCategories (fn) {
   });
 }
 
-export function saveWish (wish, fn) {
+export function createWishList (wishId, fn) {
   $.ajax({
-    url: `${API_URL}user/register/`,
+    url:`${API_URL}wishlist`,
+    method: "POST",
+    data: { wishId : wishId },
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  }).fail(function () {
+    fn ('error')
+  });
+}
+
+export function createWish (wish, fn) {
+  $.ajax({
+    url: `${API_URL}wish`,
     method: "POST",
     data: { wish : wish },
     dataType: "json"
   }).done(function (response) {
-    fn(response)
+    fn (response)
+  }).fail(function () {
+    fn ('error')
   });
 }
