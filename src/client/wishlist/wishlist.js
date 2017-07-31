@@ -5,7 +5,7 @@ let modalTemplate = require('../wish/wish.jade');
 let foundation = require('foundation-sites');
 let Dropzone = require('dropzone');
 let GMaps = require('gmaps');
-let { searchLocation, getMarkers, imageDelete, getCategories, saveWish }
+let { searchLocation, getMarkers, imageDelete, getCategories, createWish, createWishList }
 = require('../wish-api-client');
 
 
@@ -20,9 +20,32 @@ function create () {
   $('.listaDeseos')
       .html('Pulse sobre el boton para añadir un deseo.');
 
+  $( "#frm-validaciones").submit(function (e) {
+    e.preventDefault();
+  });
+
+  $(document)
+    .on('forminvalid.zf.abide', function (ev,frm) {
+      console.log('form invalido')
+    })
+    .on('formvalid.zf.abide', function (ev,frm) {
+        console.log('validaciones...')
+        // modal deseo
+        $('#wishModal').foundation('open');
+        setTimeout(function(){chargeMap()}, 2000);
+    });
+
+  $('#btn-anadir').on('click', function () {
+    $( "#frm-validaciones").submit();
+    /*let wishId =
+    createWishList (function (response) {
+      console.log(response);
+    });*/
+  });
+
   /* Dropzone */
   let myDropzone = new Dropzone("form#aw", {
-      url: '/wish/imageUpload',
+      url: 'http://wish.app/api/wish/imageupload',
       paramName: "file",
       fileSizeBase: 1024,
       parallelUploads: 1,
@@ -40,9 +63,7 @@ function create () {
               // boton quitar
               let removeButton = Dropzone.createElement("<a data-id='"+ file.name +"' class='tiny button'>Quitar</a>");
 
-              // Listen to the click event
               removeButton.addEventListener("click", function (e) {
-                  // Make sure the button click doesn't submit the form:
                   e.preventDefault();
                   e.stopPropagation();
 
@@ -70,6 +91,10 @@ function create () {
           })
       }
   })
+
+  myDropzone.on("sending", function (file, xhr, formData) {
+    formData.append("token", localStorage.getItem('token'));
+  });
 
 
   /* Categories */
@@ -116,7 +141,7 @@ function create () {
                   lat: lat,
                   lng: lng,
                   title: 'Marker #' + index,
-                  infoWindow: { content: respuesta }
+                  infoWindow: { content: response }
               })
           } else {
               console.log("No hay respuesta al buscar la localizacion")
@@ -141,14 +166,14 @@ function create () {
   }
 
   $('#btn-save').on('click', function () {
-    let wish = { }
+    /*let wish = { }
 
     saveWish (wish, function (response) {
       // close modal
-    })
+    })*/
+
+
   })
 
-  // wait two seconds before iniciate the map...
-  setTimeout(function(){chargeMap()}, 2000);
   $(document).foundation();
 }
