@@ -1,31 +1,39 @@
 .row
-  div(class='small-12 columns')
-      h2 Crear Lista
+  form(id='frm-validaciones' data-abide='ajax')
+    div(class='small-12 columns')
+        h2 Crear Lista
 
-  div(class='small-6 large-centered columns text-left')
-    label Nombre
-    input(type='text' id='name' name='name' placeholder='Escribe un nombre para la lista' required data-invalid)
-    label Privacidad
+    div(data-abide-error class='alert callout' style='display: none;')
+      p
+        i(class='fi-alert')
+          Se han producido errores en el formulario.
 
-    select(disabled)
-        option(value='') -Selecciona el tipo
-        option(value='personal')  Personal
-        option(value='protected') Privada
-        option(value='public' selected) Publica
+    div(class='small-6 large-centered columns text-left')
+      label Nombre
+      input(type='text' id='name' name='name' placeholder='Escribe un nombre para la lista' required data-invalid)
+      spam(class='form-error')
+        Debe especificar un nombre para la lista!
 
-
-  div(class='large-12 columns')
-      <hr>
-      div(id='btnAnadir' class='large-12 columns text-right')
-        div(id='btn-anadir' class='button tiny' data-open='wishModal') Añadir
-      <hr>
-
-  .listaDeseos
+      label Privacidad
+      select(disabled)
+          option(value='') -Selecciona el tipo
+          option(value='personal')  Personal
+          option(value='protected') Privada
+          option(value='public' selected) Publica
 
 
-input(type='hidden' name='hdWishListId' id='hdWishListId' value='0')
+    div(class='large-12 columns')
+        <hr>
+        div(id='btnAnadir' class='large-12 columns text-right')
+          div(id='btn-anadir' class='button tiny') Añadir
+        <hr>
 
-div(id='wishModal' class='reveal large' data-reveal)
-  p Cargando...
+    .listaDeseos
+
+
+  input(type='hidden' name='hdWishListId' id='hdWishListId' value='0')
+
+  div(id='wishModal' class='reveal large' data-reveal)
+    p Cargando...
 
 script(type='text/javascript' src='http://maps.google.com/maps/api/js?key=AIzaSyAScZ6H1tG4C4jECpZu2pCL2qbwDCIMEEg')
