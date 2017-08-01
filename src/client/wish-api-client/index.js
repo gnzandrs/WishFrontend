@@ -1,6 +1,7 @@
-var $ = require('jquery')
+var $ = require('jquery');
 
-const API_URL = 'http://wish.app/api/'
+const API_URL = 'http://wish.app/api/';
+let token = localStorage.getItem('token');
 
 export function checkUsername (username, fn) {
   $.ajax(`${API_URL}user/check/${username}`, {
@@ -101,7 +102,6 @@ export function getMarkers (fn) {
 }
 
 export function imageDelete (name, fn) {
-  let token = localStorage.getItem('token');
   $.ajax({
     url:`${API_URL}wish/delete-image`,
     method: "POST",
@@ -124,11 +124,11 @@ export function getCategories (fn) {
   });
 }
 
-export function createWishList (wishId, fn) {
+export function createWishList (wishList, fn) {
   $.ajax({
     url:`${API_URL}wishlist`,
     method: "POST",
-    data: { wishId : wishId },
+    data: { wishList : wishList, token: token },
     dataType: "json"
   }).done(function (response) {
     fn (response)
