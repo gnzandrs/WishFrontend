@@ -29,18 +29,28 @@ function create () {
       console.log('form invalido')
     })
     .on('formvalid.zf.abide', function (ev,frm) {
-        console.log('validaciones...')
-        // modal deseo
-        $('#wishModal').foundation('open');
-        setTimeout(function(){chargeMap()}, 2000);
+
+      let wishlist = {
+        name: $('#name').val()
+      };
+
+      createWishList(wishlist, function (response) {
+        if (response > 0) {
+          $('#hdWishListId').attr('value', response);
+          // wish modal
+          $('#wishModal').foundation('open');
+          setTimeout(chargeMap(), 2000);
+
+        } else {
+            console.log('error to create temporal wishlist');
+        }
+      });
+
+
     });
 
   $('#btn-anadir').on('click', function () {
     $( "#frm-validaciones").submit();
-    /*let wishId =
-    createWishList (function (response) {
-      console.log(response);
-    });*/
   });
 
   /* Dropzone */
@@ -117,6 +127,35 @@ function create () {
     });
   });
 
+
+  $('.btn-save')
+    .append(  $(`<div id="btn-save" class="button big">Guardar</div>`)
+    .on('click', function () {
+        let description = $('#description').val();
+        let reference = $('#reference').val();
+        let price = $('#price').val();
+        let list_id = $('#hdWishListId').val();
+        let location_id = $('#hdIdLocation').val();
+        let category_id = $('#hdIdCategory').val();
+
+        let wish = {
+          description: description,
+          reference: reference,
+          price: price,
+          list_id: list_id,
+          location_id: location_id,
+          category_id: selectedCategories
+        }
+
+        createWish (wish, function (response) {
+          if (response > 0) {
+            $('#hfWishId').attr('value', response);
+          } else {
+            console.log("error al crear el deseo");
+          }
+        });
+    }));
+
   /* Gmaps */
   function chargeMap () {
     let lat, lng;
@@ -164,16 +203,6 @@ function create () {
       }
     });
   }
-
-  $('#btn-save').on('click', function () {
-    /*let wish = { }
-
-    saveWish (wish, function (response) {
-      // close modal
-    })*/
-
-
-  })
 
   $(document).foundation();
 }
