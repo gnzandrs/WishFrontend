@@ -1,4 +1,4 @@
-@import '../../assets/css/foundation.css';
+@import '../../assets/css/foundation-flex.css';
 @import '../../assets/css/normalize.css';
 @import '../../assets/css/ui-lightness/jquery-ui-1.10.4.custom.css';
 @import '../../assets/css/jquery-ui/jquery-ui.css';
@@ -7,3 +7,4 @@
 @import '../../assets/css/main.css';
 @import '../../assets/css/dropzone/basic.css';
 @import '../../assets/css/dropzone/dropzone.css';
+@import '../../assets/icons/foundation-icons.css';
