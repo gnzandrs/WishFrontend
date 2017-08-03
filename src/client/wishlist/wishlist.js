@@ -136,7 +136,12 @@ function create () {
         let price = $('#price').val();
         let list_id = $('#hdWishListId').val();
         let location_id = $('#hdIdLocation').val();
-        let category_id = $('#hdIdCategory').val();
+
+        let category_id = [];
+
+        selectedCategories.forEach((value) => {
+          category_id.push(value);
+        });
 
         let wish = {
           description: description,
@@ -144,12 +149,13 @@ function create () {
           price: price,
           list_id: list_id,
           location_id: location_id,
-          category_id: selectedCategories
+          category_id: category_id
         }
 
         createWish (wish, function (response) {
           if (response > 0) {
             $('#hfWishId').attr('value', response);
+
           } else {
             console.log("error al crear el deseo");
           }

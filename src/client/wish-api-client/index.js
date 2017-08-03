@@ -112,6 +112,8 @@ export function imageDelete (name, fn) {
   });
 }
 
+
+
 export function getCategories (fn) {
   $.ajax({
     url:`${API_URL}category`,
@@ -141,7 +143,7 @@ export function createWish (wish, fn) {
   $.ajax({
     url: `${API_URL}wish`,
     method: "POST",
-    data: { wish : wish },
+    data: { wish : wish, token: token },
     dataType: "json"
   }).done(function (response) {
     fn (response)
