@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "public": "rm -R public && mkdir -p public && cp assets -R public/assets",
-    "build-js": "NODE_PATH=. browserify -t [ babelify --presets [ es2015 ] ] index.js > public/app.js",
-    "copy-files": "cp index.html public/index.html && cp css/foundation.css public/foundation.css && cp css/app.css public/app.css && cp -R views public/views",
-    "build": "npm run public && npm run build-js && npm run copy-files",
+    "build-js": "NODE_PATH=. browserify -t [ babelify --presets [ es2015 ] ] src/client/index.js > public/app.js",
+    "copy-files": "cp src/client/index.html public/index.html && cp assets/css/foundation-flex.css public/foundation-flex.css && cp assets/css/app.css public/app.css",
+    "build": "npm run public && npm run build-js && npm run copy-files && npm run jade",
     "start": "npm run build",
     "serve": "serve public",
     "clean": "rm -rf node_modules",
