@@ -1,25 +1,12 @@
-div(class='row text-center')
-    div(class='small-12 colums')
-        <br>
-        <hr>
-        <br>
-
-        form
-            .row
-                div(class='large-12 columns')
-                div(class='callout alert errors filaoculta')
-                    h1 Autentificacion de Usuario
-            .row
-                div(class='small-6 large-centered columns')
-                    label Usuario
-                    input(type='text' placeholder='Ingresa tu correo' id='email' name='email' required data-invalid)
-                    <br>
-                    label Contraseña
-                    input(type='password' placeholder='Ingresa tu contraseña' id='password' name='password')
-                    <br>
-                    div(class='callout secondary forgot-password')
-                      p ¿Olvidaste tu contraseña?
-                        a(href='#') Recupararla
-            <br>
-            div(class='small-12 columns')
-                button(class='big round button' type='submit') Ingresar
+div(class="row text-center")
+  div(class="small-12 column")
+    form
+      div(class="callout alert errors filaoculta")
+          h1 Autentificacion de Usuario
+      label Usuario
+      input(type="text" placeholder="Ingresa tu correo" id="email" name="email" required data-invalid)
+      <br>
+      label Contraseña
+      input(type="password" placeholder="Ingresa tu contraseña" id="password" name="password")
+      <br>
+      button(class="expanded button" type="submit") Ingresar

@@ -1,21 +1,29 @@
-.menu
+section#social-container
+  div(class="row align-center text-center")
+    div(class="column small-1")
+      a(href="#" target="_black")
+        i.fi-social-facebook
+    div(class="column small-1")
+      a(href="#" target="_black")
+        i.fi-social-twitter
+    div(class="column small-1")
+      a(href="#" target="_black")
+        i.fi-social-instagram
 
-.row
+section#menu-container
+  .menu
 
-    div(class='small-9 small-centered columns text-center')
-        h1 Busqueda
-        input(type='text' id='search' placeholder='Ingresa un patron de búsqueda...' required)
+section#search-container
+  div(class="row align-center text-center")
+      h1 Busqueda
+      input(type="text" id="search" placeholder="Ingresa un patron de búsqueda..." required)
+      a(id="btnBuscar" class="expanded button") Buscar
 
-    div(class='small-4 small-centered columns text-center')
-        a(id='btnBuscar' class='small round button expand') Buscar
-        <br>
+section#category-container
+  h3.text-center Categorias
+  div(class="row align-center text-center")
+    .categories
 
-
-h1 Categorias
-
-.categories
-
-div(id='barraCarga' class='filaoculta')
-  div(class='progress-label') Buscando...
-
-.wishs
+section#wish-container
+  div(class="row align-center text-center")
+    .wishs

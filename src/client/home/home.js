@@ -21,15 +21,16 @@ function home(ctx, next) {
       page('/wishlist/create')
     })
 
-    let $categories = $('.categories')
+    let $categories = $('.categories');
+
     categoryList(function (categories) {
       $.each(categories, function () {
         $categories.append($('<a />')
           .text(this.name)
-          .addClass('Radius Secondary Label category')
+          .addClass('primary label category')
           .attr('name', this.name)
           .on('click', function () {
-            let $name = this.name
+            let $name = this.name;
               category ($name, function (wishs) {
                   $('.wishs').empty()
                   if (wishs.length > 0) {
@@ -46,7 +47,11 @@ function home(ctx, next) {
               })
           }))
       })
-    })
+    });
+
+    let wishs = $('.wishs');
+
+    wishs.html('<br><p>No existen registros.<p>');
 
     $(document).foundation()
 

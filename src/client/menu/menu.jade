@@ -1,11 +1,9 @@
-div(class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium")
+div(class="title-bar small-12" data-responsive-toggle="example-menu" data-hide-for="medium")
   button(class="menu-icon" type="button" data-toggle)
   div(class="title-bar-title") Menu
 
-div(class="top-bar" id="example-menu")
-  div(class="top-bar-left")
-    ul(class="dropdown menu" data-dropdown-menu)
-      li(class="menu-text") Wishlist
+div(class="top-bar small-12" id="example-menu")
+    ul(class="menu dropdown align-spaced" data-dropdown-menu)
       li(class="has-submenu")
         a(href="#0") Perfil
         ul(class="submenu menu vertical" data-submenu)
@@ -27,10 +25,3 @@ div(class="top-bar" id="example-menu")
             a(href="#0") Perfil
           li
             a(href="#0") Privacidad
-
-  div(class="top-bar-right")
-    ul(class="menu")
-      li
-        input(type="search" placeholder="Search")
-      li
-        button(type="button" class="button") Search

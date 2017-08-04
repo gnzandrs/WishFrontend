@@ -25,8 +25,11 @@ function create () {
   });
 
   $(document)
+    .on("invalid.zf.abide", function(ev,elem) {
+      console.log("Field id "+ev.target.id+" is invalid");
+    })
     .on('forminvalid.zf.abide', function (ev,frm) {
-      console.log('form invalido')
+      console.log("Form id "+ev.target.id+" is invalid");
     })
     .on('formvalid.zf.abide', function (ev,frm) {
 
@@ -84,8 +87,8 @@ function create () {
               // Add the button to the file preview element.
               file.previewElement.appendChild(removeButton);
 
-              /* evento borrar imagen cargada
-              (aca deberia ir con un handler de <a> pero no funciona con el modal) */
+              // evento borrar imagen cargada
+              //(aca deberia ir con un handler de <a> pero no funciona con el modal)
               let $formDropzone = $('#myModal')
                 .find('.dz-preview')
                 .find('.tiny');
