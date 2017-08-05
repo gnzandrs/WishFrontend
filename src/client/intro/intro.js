@@ -1,18 +1,17 @@
-var $ = require('jquery')
-var page = require('page')
+import $ from 'jquery';
+import page from 'page';
+import template from './intro.jade';
 
-var template = require('./intro.jade')
-
-page('/intro', intro)
+page('/intro', intro);
 
 function intro () {
-    $('.app-container').html(template())
+    $('#main-container').html(template());
 
     $('.sign-up').on('click', function () {
-        page('/sign-up')
-    })
+        page('/sign-up');
+    });
 
     $('.login').on('click', function () {
-        page('/login')
-    })
+        page('/login');
+    });
 }

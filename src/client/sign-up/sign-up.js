@@ -7,7 +7,7 @@ let { checkUsername, checkEmail, countriesList, citiesList, register }
 page('/sign-up', signUp)
 
 function signUp () {
-  $('.app-container').html(template())
+  $('#main-container').html(template())
 
   let $registerForm = $('.app-container').find('form')
 

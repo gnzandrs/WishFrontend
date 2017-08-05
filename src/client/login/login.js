@@ -1,31 +1,31 @@
-let $ = require('jquery')
-let page = require('page')
-let template = require('./login.jade')
-let { login } = require('../wish-api-client')
+import $ from 'jquery';
+import page from 'page';
+import template from './login.jade';
+import { login } from '../wish-api-client';
 
-page('/login', loginPage)
+page('/login', loginPage);
 
 function loginPage () {
-  $('.app-container').html(template())
+  $('#main-container').html(template());
 
-  let $loginForm = $('.app-container').find('form')
+  let $loginForm = $('#main-container').find('form');
 
   $loginForm
     .submit(function (event) {
-      event.preventDefault()
+      event.preventDefault();
 
-      let $formData = $(this).serialize()
+      let $formData = $(this).serialize();
 
       login ($formData, function (response) {
         if (response.token) {
-          localStorage.setItem('token', response.token)
-          page.redirect('/home')
+          localStorage.setItem('token', response.token);
+          page.redirect('/home');
         } else {
           $('.errors')
             .empty()
             .removeClass('filaoculta')
-            .append($("<p>").text(response.error))
+            .append($("<p>").text(response.error));
         }
-      })
-    })
+      });
+    });
 }

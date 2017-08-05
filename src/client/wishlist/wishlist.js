@@ -1,20 +1,21 @@
-let $ = require('jquery');
-let page = require('page');
-let template = require('./wishlist.jade');
-let modalTemplate = require('../wish/wish.jade');
-let foundation = require('foundation-sites');
-let Dropzone = require('dropzone');
-let GMaps = require('gmaps');
-let { searchLocation, getMarkers, imageDelete, getCategories, createWish, createWishList }
-= require('../wish-api-client');
-
+import $ from 'jquery';
+import page from 'page';
+import template from './wishlist.jade';
+import modalTemplate from '../wish/wish.jade';
+import foundation from 'foundation-sites';
+import Dropzone from 'dropzone';
+import GMaps from 'gmaps';
+import { searchLocation, getMarkers, imageDelete, getCategories,
+  createWish, createWishList }
+  from '../wish-api-client';
 
 page('/wishlist/create', create);
 
 function create () {
   let selectedCategories = new Set();
 
-  $('.app-container').html(template());
+  $('#main-container').html(template());
+
   $('#wishModal').html(modalTemplate());
 
   $('.listaDeseos')
@@ -48,8 +49,6 @@ function create () {
             console.log('error to create temporal wishlist');
         }
       });
-
-
     });
 
   $('#btn-anadir').on('click', function () {
@@ -82,7 +81,7 @@ function create () {
 
                   // Remove the file preview.
                   _this.removeFile(file);
-              })
+              });
 
               // Add the button to the file preview element.
               file.previewElement.appendChild(removeButton);
@@ -100,10 +99,10 @@ function create () {
                   imageDelete (function (response) {
                     console.log('image deleted.');
                   })
-              })
-          })
+              });
+          });
       }
-  })
+  });
 
   myDropzone.on("sending", function (file, xhr, formData) {
     formData.append("token", localStorage.getItem('token'));
@@ -158,7 +157,6 @@ function create () {
         createWish (wish, function (response) {
           if (response > 0) {
             $('#hfWishId').attr('value', response);
-
           } else {
             console.log("error al crear el deseo");
           }
@@ -194,8 +192,8 @@ function create () {
           } else {
               console.log("No hay respuesta al buscar la localizacion")
           }
-        })
-    })
+        });
+    });
 
 
     getMarkers (function (response) {
@@ -205,7 +203,7 @@ function create () {
                   lat: response[i].latitude,
                   lng: response[i].longitude,
                   infoWindow: { content: '<div id="ver"><br><center><label>' + response[i].name + '</label><center><br></div>' }
-              })
+              });
           }
       } else {
           alert("Se ha producido un error al obtener los marcadores.")
