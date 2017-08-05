@@ -1,25 +1,17 @@
-global.jQuery = require('jquery')
-let $ = global.jQuery
-let page = require('page')
-let foundation = require('foundation-sites')
+global.jQuery = require('jquery');
+let $ = global.jQuery;
+let foundation = require('foundation-sites');
 
-let template = require('./home.jade')
-let menu = require('../menu/menu.jade')
-let { categoryList, category }
-  = require('../wish-api-client')
+import page from 'page';
+import template from './home.jade';
+import { menu } from '../menu/menu';
+import { categoryList, category } from '../wish-api-client';
 
-//const API_URL = 'http://wish.app/api/category/'
-
-page('/home', home)
+page('/home', home);
 
 function home(ctx, next) {
-
-    $('.app-container').html(template())
-    $('.menu').html(menu())
-
-    $('.menu-create').on('click', function () {
-      page('/wishlist/create')
-    })
+    $('#main-container').html(template());
+    menu();
 
     let $categories = $('.categories');
 
@@ -53,6 +45,5 @@ function home(ctx, next) {
 
     wishs.html('<br><p>No existen registros.<p>');
 
-    $(document).foundation()
-
+    $(document).foundation();
 }

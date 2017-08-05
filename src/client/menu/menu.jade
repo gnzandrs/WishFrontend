@@ -25,3 +25,11 @@ div(class="top-bar small-12" id="example-menu")
             a(href="#0") Perfil
           li
             a(href="#0") Privacidad
+          li
+            a(data-open="logout-modal") Salir
+
+div(class="reveal" id="logout-modal" data-reveal)
+  h3 Logout
+  p(class="lead") ¿Esta seguro que desea salir?
+  a(class="button warning logout-button") Salir
+  button(class="close-button" data-close aria-label="Close modal" type="button")
