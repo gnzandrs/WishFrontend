@@ -9,19 +9,21 @@ div(id="deseo")
               i(class="fi-alert")
                 Se han producido errores en el formulario.
           p Descripcion:
-            input(type="text" id="description" name="description" placeholder="Ingresa el nombre del objeto" required data-invalid)
+            input(type="text" maxlength="60" id="description" name="description" placeholder="Ingresa el nombre del objeto" required data-invalid)
             spam(class="form-error")
               Debe especificar una descripcion!
           p Referencia:
-            input(type="text" id="reference" name="reference" placeholder="Ingresa la referencia del objeto" required data-invalid)
+            input(type="text" maxlength="60" id="reference" name="reference" placeholder="Ingresa la referencia del objeto" required data-invalid)
             spam(class="form-error")
               Debe especificar una referencia!
           p Precio:
-            input(type="text" id="price" name="price" placeholder="Ingresa un precio aproximado" required data-invalid)
+            .input-group
+              span(class="input-group-label") $
+              input(type="number" id="price" name="price" class="input-group-field" placeholder="Ingresa un precio aproximado" required data-invalid)
             spam(class="form-error")
               Debe especificar un precio!
 
-      div(class="small-12 columns")
+      div(class="small-12 columns text-center")
         p Categoria:
         .categories
 
