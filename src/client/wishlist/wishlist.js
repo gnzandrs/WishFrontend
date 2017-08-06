@@ -226,7 +226,7 @@ function create () {
                     if (response.created) {
                       $('#location-content')
                         .empty()
-                        .append(`<h1>${location.name}</h1>`);
+                        .append(`<h2>${location.name}</h2>`);
                     }
                     else {
                       console.log('error');
@@ -241,19 +241,14 @@ function create () {
         });
     });
 
-
     getMarkers (function (response) {
-      if (response) {
-          for (let i in response.length) {
-              map.addMarker({
-                  lat: response[i].latitude,
-                  lng: response[i].longitude,
-                  infoWindow: { content: '<div id="ver"><br><center><label>' + response[i].name + '</label><center><br></div>' }
-              });
-          }
-      } else {
-          alert("Se ha producido un error al obtener los marcadores.")
-      }
+      response.forEach((value) => {
+        map.addMarker({
+            lat: value.latitude,
+            lng: value.longitude,
+            infoWindow: { content: '<h2>' + value.name + '</h2>' }
+        });
+      });
     });
   }
 
