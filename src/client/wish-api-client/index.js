@@ -101,6 +101,17 @@ export function getMarkers (fn) {
   })
 }
 
+export function createLocation (location, fn) {
+  $.ajax({
+    url:`${API_URL}location`,
+    method: "POST",
+    data: { location: location, token: token},
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  })
+}
+
 export function imageDelete (name, fn) {
   $.ajax({
     url:`${API_URL}wish/delete-image`,

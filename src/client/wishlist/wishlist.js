@@ -1,12 +1,13 @@
 import $ from 'jquery';
 import page from 'page';
 import template from './wishlist.jade';
-import modalTemplate from '../wish/wish.jade';
+import wishTemplate from '../wish/wish.jade';
+import locationTemplate from '../location/location.jade';
 import foundation from 'foundation-sites';
 import Dropzone from 'dropzone';
 import GMaps from 'gmaps';
 import { searchLocation, getMarkers, imageDelete, getCategories,
-  createWish, createWishList }
+  createWish, createWishList, createLocation }
   from '../wish-api-client';
 
 page('/wishlist/create', create);
@@ -16,7 +17,7 @@ function create () {
 
   $('#main-container').html(template());
 
-  $('#wishModal').html(modalTemplate());
+  $('#wishModal').html(wishTemplate());
 
   $('.listaDeseos')
       .html('Pulse sobre el boton para añadir un deseo.');
@@ -183,7 +184,7 @@ function create () {
   function chargeMap () {
     let lat, lng;
 
-    // santiago location
+    // santiago location by default
     let map = new GMaps({
         div: '#map-container',
         lat: -33.4691199,
@@ -197,17 +198,46 @@ function create () {
         lat = event.latLng.lat();
         lng = event.latLng.lng();
 
+        // if someone registered that location before, show that info
         searchLocation (lat, lng, function (response) {
-          if (response) {
+
+            let locationModal = locationTemplate();
+
+            if (JSON.parse(response).length == 0) {
               map.addMarker({
                   lat: lat,
                   lng: lng,
                   title: 'Marker #' + index,
-                  infoWindow: { content: response }
+                  infoWindow: { content: locationModal }
               })
-          } else {
-              console.log("No hay respuesta al buscar la localizacion")
-          }
+
+              // wait for the render before add event
+              setTimeout(function() {
+                $('#btn-location').on('click', function () {
+                  let locationName = $('#location-name').val();
+
+                  let location = {
+                    name: locationName,
+                    latitude: lat,
+                    longitude: lng
+                  };
+
+                  createLocation (location, function (response) {
+                    if (response.created) {
+                      $('#location-content')
+                        .empty()
+                        .append(`<h1>${location.name}</h1>`);
+                    }
+                    else {
+                      console.log('error');
+                    }
+                  });
+                })
+              }, 2000);
+            } else {
+              // show
+            }
+
         });
     });
 
