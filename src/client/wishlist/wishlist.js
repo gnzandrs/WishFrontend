@@ -25,6 +25,10 @@ function create () {
     e.preventDefault();
   });
 
+  $( "#frm-wish").submit(function (e) {
+    e.preventDefault();
+  });
+
   $(document)
     .on("invalid.zf.abide", function(ev,elem) {
       console.log("Field id "+ev.target.id+" is invalid");
@@ -33,22 +37,58 @@ function create () {
       console.log("Form id "+ev.target.id+" is invalid");
     })
     .on('formvalid.zf.abide', function (ev,frm) {
+      let formName = ev.target.id;
 
-      let wishlist = {
-        name: $('#name').val()
-      };
+      // wishlist
+      if (formName == "frm-validaciones") {
+        let wishlist = {
+          name: $('#name').val()
+        };
 
-      createWishList(wishlist, function (response) {
-        if (response > 0) {
-          $('#hdWishListId').attr('value', response);
-          // wish modal
-          $('#wishModal').foundation('open');
-          setTimeout(chargeMap(), 2000);
+        createWishList(wishlist, function (response) {
+          if (response > 0) {
+            $('#hdWishListId').attr('value', response);
+            // wish modal
+            $('#wishModal').foundation('open');
+            setTimeout(chargeMap(), 2000);
 
-        } else {
-            console.log('error to create temporal wishlist');
-        }
-      });
+          } else {
+              console.log('error to create temporal wishlist');
+          }
+        });
+      }
+
+      // wish
+      if (formName == "frm-wish") {
+        let description = $('#description').val();
+        let reference = $('#reference').val();
+        let price = $('#price').val();
+        let list_id = $('#hdWishListId').val();
+        let location_id = $('#hdIdLocation').val();
+
+        let category_id = [];
+
+        selectedCategories.forEach((value) => {
+          category_id.push(value);
+        });
+
+        let wish = {
+          description: description,
+          reference: reference,
+          price: price,
+          list_id: list_id,
+          location_id: location_id,
+          category_id: category_id
+        };
+
+        createWish (wish, function (response) {
+          if (response > 0) {
+            $('#hfWishId').attr('value', response);
+          } else {
+            console.log("error al crear el deseo");
+          }
+        });
+      }
     });
 
   $('#btn-anadir').on('click', function () {
@@ -114,6 +154,8 @@ function create () {
 
     let $categories = $('.categories');
 
+    $categories.empty();
+
     $.each(categories, function() {
         $categories.append(
           $(`<span data-id="${this.id}" class="label secondary">${this.name}</span>`)
@@ -131,36 +173,10 @@ function create () {
 
 
   $('.btn-save')
+    .empty()
     .append(  $(`<div id="btn-save" class="button big">Guardar</div>`)
     .on('click', function () {
-        let description = $('#description').val();
-        let reference = $('#reference').val();
-        let price = $('#price').val();
-        let list_id = $('#hdWishListId').val();
-        let location_id = $('#hdIdLocation').val();
-
-        let category_id = [];
-
-        selectedCategories.forEach((value) => {
-          category_id.push(value);
-        });
-
-        let wish = {
-          description: description,
-          reference: reference,
-          price: price,
-          list_id: list_id,
-          location_id: location_id,
-          category_id: category_id
-        }
-
-        createWish (wish, function (response) {
-          if (response > 0) {
-            $('#hfWishId').attr('value', response);
-          } else {
-            console.log("error al crear el deseo");
-          }
-        });
+        $( "#frm-wish").submit();
     }));
 
   /* Gmaps */

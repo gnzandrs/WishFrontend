@@ -3,13 +3,23 @@ div(id="deseo")
       div(class="small-12 medium-6 column")
         form(class="dropzone" id="aw" style="width: 400px; height: 300px;")
       div(class="small-12 medium-6 column")
-        form(id="frmDeseo" data-abide="ajax")
+        form(id="frm-wish" data-abide="ajax")
+          div(data-abide-error class="alert callout" style="display: none;")
+            p
+              i(class="fi-alert")
+                Se han producido errores en el formulario.
           p Descripcion:
             input(type="text" id="description" name="description" placeholder="Ingresa el nombre del objeto" required data-invalid)
+            spam(class="form-error")
+              Debe especificar una descripcion!
           p Referencia:
             input(type="text" id="reference" name="reference" placeholder="Ingresa la referencia del objeto" required data-invalid)
+            spam(class="form-error")
+              Debe especificar una referencia!
           p Precio:
             input(type="text" id="price" name="price" placeholder="Ingresa un precio aproximado" required data-invalid)
+            spam(class="form-error")
+              Debe especificar un precio!
 
       div(class="small-12 columns")
         p Categoria:
