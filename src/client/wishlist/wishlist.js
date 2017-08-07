@@ -7,7 +7,7 @@ import foundation from 'foundation-sites';
 import Dropzone from 'dropzone';
 import GMaps from 'gmaps';
 import { searchLocation, getMarkers, imageDelete, getCategories,
-  createWish, createWishList, createLocation }
+  createWish, createWishList, createLocation, getWishList }
   from '../wish-api-client';
 
 page('/wishlist/create', create);
@@ -17,7 +17,7 @@ function create () {
 
   $('#main-container').html(template());
 
-  $('#wishModal').html(wishTemplate());
+  $('#modal-wish').html(wishTemplate());
 
   $('.listaDeseos')
       .html('Pulse sobre el boton para añadir un deseo.');
@@ -42,21 +42,25 @@ function create () {
 
       // wishlist
       if (formName == "frm-validaciones") {
-        let wishlist = {
-          name: $('#name').val()
-        };
+        let wishListId = $('#hdWishListId').val();
 
-        createWishList(wishlist, function (response) {
-          if (response > 0) {
-            $('#hdWishListId').attr('value', response);
-            // wish modal
-            $('#wishModal').foundation('open');
-            setTimeout(chargeMap(), 2000);
+        if (wishListId == 0) {
+          let wishlist = {
+            name: $('#name').val()
+          };
 
-          } else {
-              console.log('error to create temporal wishlist');
-          }
-        });
+          createWishList(wishlist, function (response) {
+            if (response > 0) {
+              $('#hdWishListId').attr('value', response);
+            } else {
+                console.log('error to create temporal wishlist');
+            }
+          });
+        }
+
+        // wish modal
+        $('#modal-wish').foundation('open');
+        setTimeout(chargeMap(), 2000);
       }
 
       // wish
@@ -79,12 +83,47 @@ function create () {
           price: price,
           list_id: list_id,
           location_id: location_id,
-          category_id: category_id
+          category_id: 3 // temp..
         };
 
         createWish (wish, function (response) {
-          if (response > 0) {
-            $('#hfWishId').attr('value', response);
+          if (response.created) {
+            $('#modal-wish').foundation('close');
+
+            let wishListId = $('#hdWishListId').val();
+            //funcion...
+            getWishList(wishListId, function (wishList) {
+              let wishes = wishList.wishs;
+              let tableTemplate = `<table>
+                  <thead>
+                    <tr>
+                      <th width="200">Descripcion</th>
+                      <th>Referencia</th>
+                      <th width="150">Fecha</th>
+                      <th width="150">Precio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    :body:
+                    </tbody>
+                  </table>`;
+
+
+              let $wishContainer = $('#wish-container');
+              let wishRow = "";
+              $.each(wishes, function() {
+                  wishRow += `<tr><td>${this.description}</td>
+                      <td>${this.reference}</td>
+                      <td>${this.date}</td>
+                      <td>${this.price}</td></tr>`;
+              });
+
+              let table = tableTemplate.replace(':body:', wishRow);
+              $wishContainer.empty()
+              $wishContainer.append(table);
+
+            })
+
           } else {
             console.log("error al crear el deseo");
           }

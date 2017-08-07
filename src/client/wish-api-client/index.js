@@ -137,6 +137,18 @@ export function getCategories (fn) {
   });
 }
 
+export function getWishList(wishListId, fn) {
+  $.ajax({
+    url:`${API_URL}wishlist/${wishListId}`,
+    method: "GET",
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  }).fail(function () {
+    fn ('error')
+  });
+}
+
 export function createWishList (wishList, fn) {
   $.ajax({
     url:`${API_URL}wishlist`,
