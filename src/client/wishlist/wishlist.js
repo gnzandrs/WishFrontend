@@ -9,12 +9,15 @@ import GMaps from 'gmaps';
 import { searchLocation, getMarkers, imageDelete, getCategories,
   createWish, createWishList, createLocation, getWishList }
   from '../wish-api-client';
+import { getDate } from '../utils';
 
 page('/wishlist/create', create);
 
-function create () {
-  let selectedCategories = new Set();
 
+let selectedCategories = new Set();
+
+function create () {
+  localStorage.removeItem('wishList');
   $('#main-container').html(template());
 
   $('#modal-wish').html(wishTemplate());
@@ -30,6 +33,17 @@ function create () {
     e.preventDefault();
   });
 
+  $('#btn-anadir').on('click', function () {
+    $( "#frm-validaciones").submit();
+  });
+
+  $('.btn-save')
+    .empty()
+    .append(  $(`<div id="btn-save" class="button big">Guardar</div>`)
+    .on('click', function () {
+        $( "#frm-wish").submit();
+    }));
+
   $(document)
     .on("invalid.zf.abide", function(ev,elem) {
       console.log("Field id "+ev.target.id+" is invalid");
@@ -42,98 +56,16 @@ function create () {
 
       // wishlist
       if (formName == "frm-validaciones") {
-        let wishListId = $('#hdWishListId').val();
-
-        if (wishListId == 0) {
-          let wishlist = {
-            name: $('#name').val()
-          };
-
-          createWishList(wishlist, function (response) {
-            if (response > 0) {
-              $('#hdWishListId').attr('value', response);
-            } else {
-                console.log('error to create temporal wishlist');
-            }
-          });
-        }
-
-        // wish modal
+        createWishListTemp();
         $('#modal-wish').foundation('open');
         setTimeout(chargeMap(), 2000);
       }
 
       // wish
       if (formName == "frm-wish") {
-        let description = $('#description').val();
-        let reference = $('#reference').val();
-        let price = $('#price').val();
-        let list_id = $('#hdWishListId').val();
-        let location_id = $('#hdIdLocation').val();
-
-        let category_id = [];
-
-        selectedCategories.forEach((value) => {
-          category_id.push(value);
-        });
-
-        let wish = {
-          description: description,
-          reference: reference,
-          price: price,
-          list_id: list_id,
-          location_id: location_id,
-          category_id: 3 // temp..
-        };
-
-        createWish (wish, function (response) {
-          if (response.created) {
-            $('#modal-wish').foundation('close');
-
-            let wishListId = $('#hdWishListId').val();
-            //funcion...
-            getWishList(wishListId, function (wishList) {
-              let wishes = wishList.wishs;
-              let tableTemplate = `<table>
-                  <thead>
-                    <tr>
-                      <th width="200">Descripcion</th>
-                      <th>Referencia</th>
-                      <th width="150">Fecha</th>
-                      <th width="150">Precio</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    :body:
-                    </tbody>
-                  </table>`;
-
-
-              let $wishContainer = $('#wish-container');
-              let wishRow = "";
-              $.each(wishes, function() {
-                  wishRow += `<tr><td>${this.description}</td>
-                      <td>${this.reference}</td>
-                      <td>${this.date}</td>
-                      <td>${this.price}</td></tr>`;
-              });
-
-              let table = tableTemplate.replace(':body:', wishRow);
-              $wishContainer.empty()
-              $wishContainer.append(table);
-
-            })
-
-          } else {
-            console.log("error al crear el deseo");
-          }
-        });
+        createWishTemp();
       }
     });
-
-  $('#btn-anadir').on('click', function () {
-    $( "#frm-validaciones").submit();
-  });
 
   /* Dropzone */
   let myDropzone = new Dropzone("form#aw", {
@@ -211,14 +143,6 @@ function create () {
     });
   });
 
-
-  $('.btn-save')
-    .empty()
-    .append(  $(`<div id="btn-save" class="button big">Guardar</div>`)
-    .on('click', function () {
-        $( "#frm-wish").submit();
-    }));
-
   /* Gmaps */
   function chargeMap () {
     let lat, lng;
@@ -292,4 +216,78 @@ function create () {
   }
 
   $(document).foundation();
+}
+
+function createWishListTemp() {
+  let wishList = JSON.parse(localStorage.getItem('wishList'));
+
+  if (wishList == null) {
+    let wishList = {
+      name: $('#name').val(),
+      wishes: {}
+    };
+
+    localStorage.setItem('wishList', JSON.stringify(wishList));
+  }
+}
+
+function createWishTemp () {
+  let description = $('#description').val();
+  let reference = $('#reference').val();
+  let price = $('#price').val();
+  let list_id = $('#hdWishListId').val();
+  let location_id = $('#hdIdLocation').val();
+
+  let category_id = [];
+
+  selectedCategories.forEach((value) => {
+    category_id.push(value);
+  });
+
+  let wish = {
+    description: description,
+    reference: reference,
+    price: price,
+    list_id: list_id,
+    location_id: location_id,
+    category_id: 3 // temp..
+  };
+
+  let wishList = JSON.parse(localStorage.getItem('wishList'));
+  wishList["wishes"] += JSON.stringify(wish);
+  localStorage.setItem('wishList', JSON.stringify(wishList));
+  //console.log(JSON.parse(localStorage.getItem('wishList')));
+  $('#modal-wish').foundation('close');
+  refreshWishList();
+}
+
+function refreshWishList () {
+  let wishList = JSON.parse(localStorage.getItem('wishList'));
+
+  let tableTemplate = `<table>
+      <thead>
+        <tr>
+          <th width="200">Descripcion</th>
+          <th>Referencia</th>
+          <th width="150">Fecha</th>
+          <th width="150">Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        :body:
+        </tbody>
+      </table>`;
+
+    let $wishContainer = $('#wish-container');
+    let wishRow = "";
+    $.each(wishList.wish, function() {
+        wishRow += `<tr><td>${this.description}</td>
+            <td>${this.reference}</td>
+            <td>${this.date}</td>
+            <td>${this.price}</td></tr>`;
+    });
+
+    let table = tableTemplate.replace(':body:', wishRow);
+    $wishContainer.empty();
+    $wishContainer.append(table);
 }
