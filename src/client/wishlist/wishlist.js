@@ -242,6 +242,7 @@ function createJsonWish () {
   let price = $('#price').val();
   let list_id = $('#hdWishListId').val();
   let location_id = $('#hdIdLocation').val();
+  let id = getDate(); // temporal id
 
   let category_id = [];
 
@@ -250,7 +251,7 @@ function createJsonWish () {
   });
 
   let wish = {
-    id: 0,
+    id: id,
     description: description,
     reference: reference,
     price: price,
@@ -270,14 +271,24 @@ function createJsonWish () {
   cleanModalFields();
 }
 
+function deleteJsonWish (wishId) {
+  wishList.wishs.forEach((wish) => {
+      if (wish.id == wishId) {
+        wishList.wishs.splice(wish, 1);
+      }
+  });
+  refreshWishList();
+}
+
 function refreshWishList () {
-  let tableTemplate = `<table>
+  let tableTemplate = `<table id="table-wishlist" class="stack">
       <thead>
         <tr>
           <th width="200">Descripcion</th>
           <th>Referencia</th>
           <th width="150">Fecha</th>
           <th width="150">Precio</th>
+          <th width="150"></th>
         </tr>
       </thead>
       <tbody>
@@ -288,17 +299,38 @@ function refreshWishList () {
     let $wishContainer = $('#wish-container');
     let wishRow = "";
 
+    if (wishList.wishs.length > 0) {
+      wishList.wishs.forEach((wish) => {
+        wishRow += `<tr data-id="${wish.id}">
+                    <td>${wish.description}</td>
+                    <td>${wish.reference}</td>
+                    <td>${wish.date}</td>
+                    <td>${wish.price}</td>
+                    <td>
+                      <button type="button" class="success tiny button btn-edit">Editar</button>
+                      <button type="button" class="alert tiny button btn-delete">Delete</button>
+                    </td>
+                    </tr>`;
+      });
 
-    wishList.wishs.forEach((wish) => {
-      wishRow += `<tr><td>${wish.description}</td>
-          <td>${wish.reference}</td>
-          <td>${wish.date}</td>
-          <td>${wish.price}</td></tr>`;
-    });
+      let table = tableTemplate.replace(':body:', wishRow);
 
-    let table = tableTemplate.replace(':body:', wishRow);
-    $wishContainer.empty();
-    $wishContainer.append(table);
+      $wishContainer.empty();
+      $wishContainer.append(table);
+
+      $('.btn-delete').on('click', function (e) {
+        let wishId = $(this).parent().parent().data('id');
+        deleteJsonWish(wishId);
+        $(this).parent().parent().fadeOut();
+        refreshWishList();
+      });
+
+      $('.btn-edit').on('click', function (e) {
+        let dataId = $(this).parent().data('id');
+      });
+    } else {
+      $wishContainer.html('<p>Pulse el boton para agregar deseos.</p>');
+    }
 }
 
 function cleanModalFields () {
