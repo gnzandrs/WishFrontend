@@ -11,13 +11,25 @@ import { searchLocation, getMarkers, imageDelete, getCategories,
   from '../wish-api-client';
 import { getDate } from '../utils';
 
+let selectedCategories = new Set();
+let category_id = [];
+let wishList = {
+  id: 0,
+  name: "",
+  access: "",
+  occasion: "",
+  followers: 0,
+  notification: 0,
+  password: "",
+  user_id: 0,
+  created_at: "",
+  updated_at: "",
+  wishs: []
+};
+
 page('/wishlist/create', create);
 
-
-let selectedCategories = new Set();
-
 function create () {
-  localStorage.removeItem('wishList');
   $('#main-container').html(template());
 
   $('#modal-wish').html(wishTemplate());
@@ -56,14 +68,14 @@ function create () {
 
       // wishlist
       if (formName == "frm-validaciones") {
-        createWishListTemp();
+        createJsonWishList();
         $('#modal-wish').foundation('open');
         setTimeout(chargeMap(), 2000);
       }
 
       // wish
       if (formName == "frm-wish") {
-        createWishTemp();
+        createJsonWish();
       }
     });
 
@@ -218,20 +230,13 @@ function create () {
   $(document).foundation();
 }
 
-function createWishListTemp() {
-  let wishList = JSON.parse(localStorage.getItem('wishList'));
-
-  if (wishList == null) {
-    let wishList = {
-      name: $('#name').val(),
-      wishes: {}
-    };
-
-    localStorage.setItem('wishList', JSON.stringify(wishList));
+function createJsonWishList () {
+  if (wishList.name == "") {
+    wishList.name = $('#name').val();
   }
 }
 
-function createWishTemp () {
+function createJsonWish () {
   let description = $('#description').val();
   let reference = $('#reference').val();
   let price = $('#price').val();
@@ -245,25 +250,27 @@ function createWishTemp () {
   });
 
   let wish = {
+    id: 0,
     description: description,
     reference: reference,
     price: price,
-    list_id: list_id,
-    location_id: location_id,
-    category_id: 3 // temp..
+    date: "",
+    list_id: 0,
+    location_id: 0,
+    category_id: 3, //temp...
+    created_at: "",
+    updated_at: ""
   };
 
-  let wishList = JSON.parse(localStorage.getItem('wishList'));
-  wishList["wishes"] += JSON.stringify(wish);
-  localStorage.setItem('wishList', JSON.stringify(wishList));
-  //console.log(JSON.parse(localStorage.getItem('wishList')));
+  // add to wishlist
+  wishList.wishs.push(wish);
+
   $('#modal-wish').foundation('close');
   refreshWishList();
+  cleanModalFields();
 }
 
 function refreshWishList () {
-  let wishList = JSON.parse(localStorage.getItem('wishList'));
-
   let tableTemplate = `<table>
       <thead>
         <tr>
@@ -280,14 +287,24 @@ function refreshWishList () {
 
     let $wishContainer = $('#wish-container');
     let wishRow = "";
-    $.each(wishList.wish, function() {
-        wishRow += `<tr><td>${this.description}</td>
-            <td>${this.reference}</td>
-            <td>${this.date}</td>
-            <td>${this.price}</td></tr>`;
+
+
+    wishList.wishs.forEach((wish) => {
+      wishRow += `<tr><td>${wish.description}</td>
+          <td>${wish.reference}</td>
+          <td>${wish.date}</td>
+          <td>${wish.price}</td></tr>`;
     });
 
     let table = tableTemplate.replace(':body:', wishRow);
     $wishContainer.empty();
     $wishContainer.append(table);
+}
+
+function cleanModalFields () {
+  $('#description').val('');
+  $('#reference').val('');
+  $('#price').val('');
+  $('#hdWishListId').val('');
+  $('#hdIdLocation').val('');
 }
