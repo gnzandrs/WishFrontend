@@ -185,7 +185,6 @@ function create () {
 
         // if someone registered that location before, show that info
         searchLocation (lat, lng, function (response) {
-
             let locationModal = locationTemplate();
 
             if (JSON.parse(response).length == 0) {
@@ -212,26 +211,27 @@ function create () {
                       $('#location-content')
                         .empty()
                         .append(`<h2>${location.name}</h2>`);
+
+                      $('#hdLocationId').val(response.id);
                     }
                     else {
-                      console.log('error');
+                      console.log('error to create location');
                     }
                   });
                 })
               }, 2000);
-            } else {
-              // show
             }
-
         });
     });
 
     getMarkers (function (response) {
       response.forEach((value) => {
+        let locationContent = `<p>${value.name}</p>
+                <input type="button" class="button tiny" value="Usar Lugar" id="btn-location"/>`;
         map.addMarker({
             lat: value.latitude,
             lng: value.longitude,
-            infoWindow: { content: '<h2>' + value.name + '</h2>' }
+            infoWindow: { content: locationContent }
         });
       });
     });
@@ -250,7 +250,7 @@ function create () {
     let reference = $('#reference').val();
     let price = $('#price').val();
     let list_id = $('#hdWishListId').val();
-    let location_id = $('#hdIdLocation').val();
+    let location_id = $('#hdLocationId').val();
     let id = getDate(); // temporal id
 
     let category_id = [];
@@ -266,7 +266,7 @@ function create () {
       price: price,
       date: "",
       list_id: 0,
-      location_id: 0,
+      location_id: location_id,
       category_id: 3, //temp...
       created_at: "",
       updated_at: ""
@@ -296,10 +296,12 @@ function create () {
           let description = $('#description').val();
           let reference = $('#reference').val();
           let price = $('#price').val();
+          let location_id = $('#hdLocationId').val();
 
           wish.description = description;
           wish.reference = reference;
           wish.price = price;
+          wish.location_id = location_id;
           return;
         }
     });
@@ -324,6 +326,7 @@ function create () {
     $('#price').val(wish.price);
 
     $('#hdWishId').val(wishId);
+    $('#hdLocationId').val(wish.location_id);
 
     // open modal
     $('#modal-wish').foundation('open');
@@ -389,6 +392,6 @@ function create () {
     $('#reference').val('');
     $('#price').val('');
     $('#hdWishListId').val('');
-    $('#hdIdLocation').val('');
+    $('#hdLocationId').val('');
   }
 }
