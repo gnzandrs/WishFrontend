@@ -394,4 +394,22 @@ function create () {
     $('#hdWishListId').val('');
     $('#hdLocationId').val('');
   }
+
+  function createWishListFromJson() {
+    createWishList(wishList, function (response) {
+      if (response.created) {
+
+        wishList.wishs.forEach((wish) => {
+          createWish(wish, function (res) {
+            if (!res.created) {
+              console.log("error creating wish");
+            }
+            page('/wishlist/create')
+          });
+        });
+      } else {
+        console.log("error to create the list");
+      }
+    });
+  }
 }
