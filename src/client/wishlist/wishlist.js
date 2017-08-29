@@ -7,14 +7,15 @@ import foundation from 'foundation-sites';
 import Dropzone from 'dropzone';
 import GMaps from 'gmaps';
 import { searchLocation, getMarkers, imageDelete, getCategories,
-  createWish, createWishList, createLocation, getWishList }
+  createWish, createWishList, createLocation, getWishList, createImageDirectory }
   from '../wish-api-client';
 import { getDate } from '../utils';
 
 let selectedCategories = new Set();
 let category_id = [];
+let tmpWishId = getDate();
 let wishList = {
-  id: 0,
+  id: tmpWishId,
   name: "",
   access: "",
   occasion: "",
@@ -30,6 +31,13 @@ let wishList = {
 page('/wishlist/create', create);
 
 function create () {
+
+  createImageDirectory($wishList, function (response) {
+    if (!response.created) {
+      console.log('se produjo un error al crear el directorio temporal de imagenes');
+    }
+  });
+
   $('#main-container').html(template());
 
   $('#modal-wish').html(wishTemplate());

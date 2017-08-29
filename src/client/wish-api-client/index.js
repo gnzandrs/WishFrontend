@@ -174,3 +174,16 @@ export function createWish (wish, fn) {
     fn ('error')
   });
 }
+
+export function createImageDirectory (wishId) {
+  $.ajax({
+    url: `${API_URL}wishlist/create-image-directory`,
+    method: "POST",
+    data: { wish : wish, token: token },
+    dataType: "json"
+  }).done(function (response) {
+    fn (response)
+  }).fail(function () {
+    fn ('error')
+  });
+}
