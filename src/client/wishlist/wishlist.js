@@ -382,6 +382,15 @@ function create () {
           let wishId = $(this).parent().parent().data('id');
           chargeWishModal(wishId);
         });
+
+        $('.btnSaveWishList')
+          .empty()
+          .append(  $(`<div id="btn-save-wishlist" class="expanded button">Guardar</div>`)
+          .on('click', function () {
+              createWishListFromJson();
+          }));
+
+
       } else {
         $wishContainer.html('<p>Pulse el boton para agregar deseos.</p>');
       }
