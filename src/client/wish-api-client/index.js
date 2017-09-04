@@ -175,11 +175,11 @@ export function createWish (wish, fn) {
   });
 }
 
-export function createImageDirectory (wishId) {
+export function createImageDirectory (wishListId, fn) {
   $.ajax({
     url: `${API_URL}wishlist/create-image-directory`,
     method: "POST",
-    data: { wish : wish, token: token },
+    data: { wishListId : wishListId, token: token },
     dataType: "json"
   }).done(function (response) {
     fn (response)

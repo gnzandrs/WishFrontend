@@ -32,7 +32,7 @@ page('/wishlist/create', create);
 
 function create () {
 
-  createImageDirectory($wishList, function (response) {
+  createImageDirectory(wishList.id, function (response) {
     if (!response.created) {
       console.log('se produjo un error al crear el directorio temporal de imagenes');
     }
@@ -109,6 +109,8 @@ function create () {
       //createImageThumbnails: true,
       addRemoveLinks: false,
       dictDefaultMessage: "Arrastrar imagenes para cargar.",
+      params: { token: localStorage.getItem('token'),
+                wishListId: wishList.id },
 
       init: function () {
           this.on("addedfile", function (file) {
