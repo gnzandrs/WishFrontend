@@ -7,7 +7,7 @@ import foundation from 'foundation-sites';
 import Dropzone from 'dropzone';
 import GMaps from 'gmaps';
 import { searchLocation, getMarkers, imageDelete, getCategories,
-  createWish, createWishList, createLocation, getWishList, createImageDirectory }
+  createWish, createWishList, createLocation, getWishList, createImageDirectory, createWishDirectory }
   from '../wish-api-client';
 import { getDate } from '../utils';
 
@@ -285,6 +285,13 @@ function create () {
     // add to wishlist
     wishList.wishs.push(wish);
 
+    // create tmp directory to images
+    createWishDirectory(wishList.id, wish.id, function (response) {
+      if (!response.created) {
+        console.log('se produjo un error al crear el directorio temporal de imagenes para el deseo');
+      }
+    });
+
     $('#modal-wish').foundation('close');
     refreshWishList();
     cleanModalFields();
@@ -412,20 +419,24 @@ function create () {
     $('#price').val('');
     $('#hdWishListId').val('');
     $('#hdLocationId').val('');
+    myDropzone.removeAllFiles(true);
   }
 
   function createWishListFromJson() {
     createWishList(wishList, function (response) {
       if (response.created) {
+        wishList.id = response.wishListId; // update temp id
 
         wishList.wishs.forEach((wish) => {
+          wish.list_id = wishList.id;
           createWish(wish, function (res) {
             if (!res.created) {
               console.log("error creating wish");
             }
-            page('/wishlist/create')
           });
         });
+        /** ok message here ***/
+        page('/wishlist/create')
       } else {
         console.log("error to create the list");
       }
