@@ -13,9 +13,9 @@ import { getDate } from '../utils';
 
 let selectedCategories = new Set();
 let category_id = [];
-let tmpWishId = getDate();
+let tmpListId = getDate();
 let wishList = {
-  id: tmpWishId,
+  id: tmpListId,
   name: "",
   access: "",
   occasion: "",
@@ -27,6 +27,7 @@ let wishList = {
   updated_at: "",
   wishs: []
 };
+let wishEdit = 0;
 
 page('/wishlist/create', create);
 
@@ -77,14 +78,24 @@ function create () {
       // wishlist
       if (formName == "frm-validaciones") {
         createJsonWishList();
+        cleanModalFields();
+        let tmpWishId = getDate(); // temporal id
+        $('#hdWishId').val(tmpWishId);
+
+        // create tmp directory to images
+        createWishDirectory(wishList.id, tmpWishId, function (response) {
+          if (!response.created) {
+            console.log('se produjo un error al crear el directorio temporal de imagenes para el deseo');
+          }
+        });
+
         $('#modal-wish').foundation('open');
         setTimeout(chargeMap(), 2000);
       }
 
       // wish
       if (formName == "frm-wish") {
-        let wishId = $('#hdWishId').val();
-        if (wishId == 0)
+        if (wishEdit == 0)
         {
           // new
           createJsonWish();
@@ -93,7 +104,6 @@ function create () {
           updateJsonWish(wishId);
           $('#modal-wish').foundation('close');
         }
-
       }
     });
 
@@ -109,9 +119,6 @@ function create () {
       //createImageThumbnails: true,
       addRemoveLinks: false,
       dictDefaultMessage: "Arrastrar imagenes para cargar.",
-      params: { token: localStorage.getItem('token'),
-                wishListId: wishList.id },
-
       init: function () {
           this.on("addedfile", function (file) {
               let _this = this;
@@ -150,6 +157,8 @@ function create () {
 
   myDropzone.on("sending", function (file, xhr, formData) {
     formData.append("token", localStorage.getItem('token'));
+    formData.append("wishListId", wishList.id);
+    formData.append("wishId", $('#hdWishId').val());
   });
 
 
@@ -256,12 +265,12 @@ function create () {
   }
 
   function createJsonWish () {
+    let id = $('#hdWishId').val();
     let description = $('#description').val();
     let reference = $('#reference').val();
     let price = $('#price').val();
     let list_id = $('#hdWishListId').val();
     let location_id = $('#hdLocationId').val();
-    let id = getDate(); // temporal id
 
     let category_id = [];
 
@@ -285,16 +294,9 @@ function create () {
     // add to wishlist
     wishList.wishs.push(wish);
 
-    // create tmp directory to images
-    createWishDirectory(wishList.id, wish.id, function (response) {
-      if (!response.created) {
-        console.log('se produjo un error al crear el directorio temporal de imagenes para el deseo');
-      }
-    });
-
     $('#modal-wish').foundation('close');
-    refreshWishList();
     cleanModalFields();
+    refreshWishList();
   }
 
   function deleteJsonWish (wishId) {
@@ -338,6 +340,7 @@ function create () {
     });
 
     // charge in modal
+    wishEdit = 1;
     $('#description').val(wish.description);
     $('#reference').val(wish.reference);
     $('#price').val(wish.price);
@@ -419,6 +422,8 @@ function create () {
     $('#price').val('');
     $('#hdWishListId').val('');
     $('#hdLocationId').val('');
+    $('#hdWishId').val(0);
+    wishEdit = 0;
     myDropzone.removeAllFiles(true);
   }
 

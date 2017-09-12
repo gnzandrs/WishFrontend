@@ -190,7 +190,7 @@ export function createImageDirectory (wishListId, fn) {
 
 export function createWishDirectory (wishListId, wishId, fn) {
   $.ajax({
-    url: `${API_URL}wishlist/create-wish-directory`,
+    url: `${API_URL}wish/create-wish-directory`,
     method: "POST",
     data: { wishListId: wishListId, wishId: wishId, token: token },
     dataType: "json"
